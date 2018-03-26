@@ -1,5 +1,6 @@
 /* RGB to CMY
    CMY value is obtained by subtracting RGB value from 255.
+   Simply put, output image is negative image of original input image for both colour and grayscale images.
    Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
    Author- Chinmay Jog
 */
