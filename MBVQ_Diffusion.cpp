@@ -1,29 +1,67 @@
-/*
-// Author Chinmay Jog
-// Id: 6171795819
-// Email: cjog@usc.edu
-// Date: Feb 25, 2018
-// Assignment 2
-// Question 2- MBVQ Colour Error Diffusion
-*/#include <stdio.h>#include <iostream>#include <stdlib.h>
-#include <math.h>using namespace std;
-double*** create_3D_array(int xSize, int ySize, int BytesPerPixel);
+/* MBVQ diffusion for colour images
+   Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
+   Author- Chinmay Jog
+*/
+
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+
+using namespace std;
+
+double*** create_3D_array(int xSize, int ySize, int BytesPerPixel);
 void cmyw(double*** tempData, int i, int j);
 void krgb(double*** tempData, int i, int j);
 void mygc(double*** tempData, int i, int j);
 void rgmy(double*** tempData, int i, int j);
 void rgbm(double*** tempData, int i, int j);
 void cmgb(double*** tempData, int i, int j);
-int main(int argc, char *argv[]){	// Define file pointer and variables	FILE *file;
+
+int main(int argc, char *argv[])
+
+{
+	// Define file pointer and variables
+	FILE *file;
 	int BytesPerPixel;
 	int xSize = 256;
-	int ySize = 256;	// Check for proper syntax	if (argc < 3){		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;		return 0;	}	// Check if image is grayscale or color	if (argc < 4){		BytesPerPixel = 1; // default is grey image	}	else {		BytesPerPixel = atoi(argv[3]);		// Check if size is specified		if (argc >= 5){
+	int ySize = 256;
+
+	// Check for proper syntax
+	if (argc < 3){
+		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;
+		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;
+		return 0;
+	}
+
+	// Check if image is grayscale or color
+	if (argc < 4){
+		BytesPerPixel = 1; // default is grey image
+	}
+	else {
+		BytesPerPixel = atoi(argv[3]);
+		// Check if size is specified
+		if (argc >= 5){
 			xSize = atoi(argv[4]);
-			ySize = atoi(argv[5]);		}	}	// Allocate image data array
+			ySize = atoi(argv[5]);
+		}
+	}
+
+	// Allocate image data array
 	unsigned char* ImageData = new unsigned char [xSize*ySize*BytesPerPixel];
 	double*** tempData = create_3D_array(xSize, ySize, BytesPerPixel);
-	unsigned char* result = new unsigned char [xSize*ySize*BytesPerPixel];	// Read image (filename specified by first argument) into image data matrix	if (!(file=fopen(argv[1],"rb"))) {		cout << "Cannot open file: " << argv[1] <<endl;		exit(1);	}
-	fread(ImageData, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	//fread(Imagedata2, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);	///////////////////////// INSERT YOUR PROCESSING CODE HERE /////////////////////////
+	unsigned char* result = new unsigned char [xSize*ySize*BytesPerPixel];
+
+	// Read image (filename specified by first argument) into image data matrix
+	if (!(file=fopen(argv[1],"rb"))) {
+		cout << "Cannot open file: " << argv[1] <<endl;
+		exit(1);
+	}
+	fread(ImageData, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	//fread(Imagedata2, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
+
+	///////////////////////// INSERT YOUR PROCESSING CODE HERE /////////////////////////
 
 	for (int i = 0; i < ySize; i++)
 	{
@@ -89,7 +127,16 @@ void cmgb(double*** tempData, int i, int j);
 				result[i*xSize*3 + j*3 + k] = tempData[i][j][k];
 			}
 		}
-	}	// Write image data (filename specified by second argument) from image data matrix	if (!(file=fopen(argv[2],"wb"))) {		cout << "Cannot open file: " << argv[2] << endl;		exit(1);	}	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
+	}
+
+	// Write image data (filename specified by second argument) from image data matrix
+
+	if (!(file=fopen(argv[2],"wb"))) {
+		cout << "Cannot open file: " << argv[2] << endl;
+		exit(1);
+	}
+	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
 
 	delete[] ImageData;
 	delete[] result;
@@ -101,7 +148,11 @@ void cmgb(double*** tempData, int i, int j);
 		}
 			delete[] tempData[i];
 	}
-	delete[] tempData;	return 0;}
+	delete[] tempData;
+
+	return 0;
+}
+
 
 double*** create_3D_array(int xSize, int ySize, int BytesPerPixel)
 {
