@@ -1,5 +1,6 @@
 /* Oil Painting Effect
    Output image looks like an oil painting
+   Input image should be colour image
    Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
    Author- Chinmay Jog
 */
