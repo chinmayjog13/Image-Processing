@@ -1,27 +1,68 @@
-/*
-// Author Chinmay Jog
-// Id: 6171795819
-// Email: cjog@usc.edu
-// Date: Feb 25, 2018
-// Assignment 2
-// Question 3- Image Thinning
+/* Morhological Operation- Thinning
+   For images containing large objects, value of variable 'iteration' may need to be increased
+   Object is black, background is white
+   Input must be grayscale
+   Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
+   Author- Chinmay Jog
 */
 
-#include <stdio.h>#include <iostream>#include <stdlib.h>
-#include <math.h>using namespace std;
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+
+using namespace std;
 
 unsigned char get_pattern(unsigned char** grayint, int u, int v);
-unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char *argv[]){	// Define file pointer and variables	FILE *file;	int BytesPerPixel;	int xSize = 512;
-	int ySize = 512;	// Check for proper syntax	if (argc < 3){		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;		return 0;	}	// Check if image is grayscale or color	if (argc < 4){		BytesPerPixel = 1; // default is grey image	}	else {		BytesPerPixel = atoi(argv[3]);		// Check if size is specified		if (argc >= 5){			xSize = atoi(argv[4]);
-			ySize = atoi(argv[5]);		}	}	// Allocate image data array	unsigned char* ImageData = new unsigned char [xSize*ySize*BytesPerPixel];
+unsigned char** create_2D_array(int xSize, int ySize);
+
+int main(int argc, char *argv[])
+
+{
+	// Define file pointer and variables
+	FILE *file;
+	int BytesPerPixel;
+	int xSize = 512;
+	int ySize = 512;
+
+	// Check for proper syntax
+	if (argc < 3){
+		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;
+		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;
+		return 0;
+	}
+
+	// Check if image is grayscale or color
+	if (argc < 4){
+		BytesPerPixel = 1; // default is grey image
+	}
+	else {
+		BytesPerPixel = atoi(argv[3]);
+		// Check if size is specified
+		if (argc >= 5){
+			xSize = atoi(argv[4]);
+			ySize = atoi(argv[5]);
+		}
+	}
+
+	// Allocate image data array
+	unsigned char* ImageData = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* result = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* gray = new unsigned char [xSize*ySize];
 
 	unsigned char** grayint = create_2D_array(xSize+2, ySize+2);
 	unsigned char** gray2 = create_2D_array(xSize+2, ySize+2);
 	unsigned char** resultint = create_2D_array(xSize, ySize);
-	// Read images (filename specified by first 3 arguments) into image data matrix	if (!(file=fopen(argv[1],"rb"))) {		cout << "Cannot open file: " << argv[1] <<endl;		exit(1);	}	fread(ImageData, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
-	// Stitching
+
+	// Read images (filename specified by first 3 arguments) into image data matrix
+	if (!(file=fopen(argv[1],"rb"))) {
+		cout << "Cannot open file: " << argv[1] <<endl;
+		exit(1);
+	}
+	fread(ImageData, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
+
+	// Stitching
 	for (int i = 0; i < xSize*ySize; i++)
     {
         if (ImageData[i] <= 127)
@@ -171,7 +212,15 @@ unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char 
 
     }
     cout << "Result success " << endl;
-	// Write image data (filename specified by second argument) from image data matrix	if (!(file=fopen(argv[2],"wb"))) {		cout << "Cannot open file: " << argv[2] << endl;		exit(1);	}	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
+
+	// Write image data (filename specified by second argument) from image data matrix
+
+	if (!(file=fopen(argv[2],"wb"))) {
+		cout << "Cannot open file: " << argv[2] << endl;
+		exit(1);
+	}
+	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
 
 	delete[] ImageData;
 	delete[] gray;
@@ -187,7 +236,9 @@ unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char 
     delete[] grayint;
     delete[] gray2;
     delete[] resultint;
-	return 0;}
+
+	return 0;
+}
 
 unsigned char** create_2D_array(int xSize, int ySize)
 {
