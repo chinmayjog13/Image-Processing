@@ -1,10 +1,7 @@
-/*
-/ Author Chinmay Jog
-/ Id 6171795819
-/ Email cjog@usc.edu
-/ Date Feb 4, 2018
-/ EE569 Assignment 1
-/ Question 3- Noise Removal
+/* Noise Removal for colour images
+   Median filter and gaussian filter have been used. Unwanted filter can be commented out
+   Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
+   Author- Chinmay Jog
 */
 
 #include <stdio.h>
