@@ -139,17 +139,6 @@ int main(int argc, char *argv[])
 
     // Warping function call
 
-//    cout << "Now stitching left and middle " << endl;
-//    for (int i = 0; i < ySize; i++)
-//    {
-//        for (int j = 0; j < xSize; j++)
-//        {
-//            //cout << "i is " << i << " j is " << j << endl;
-//            result[(i+312)*(xSize+1500)*3 + (j+515)*3] = rinmid[i][j];
-//            result[(i+312)*(xSize+1500)*3 + (j+515)*3 + 1] = ginmid[i][j];
-//            result[(i+312)*(xSize+1500)*3 + (j+515)*3 + 2] = binmid[i][j];
-//        }
-//    }
 
     cout << "now projection " << endl;
     for (int i = 0; i < ySize+500; i++)
