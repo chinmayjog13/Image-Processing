@@ -1,18 +1,52 @@
-/*
-// Author Chinmay Jog
-// Id: 6171795819
-// Email: cjog@usc.edu
-// Date: Feb 25, 2018
-// Assignment 2
-// Question 1- Image Stitching
-*/#include <stdio.h>#include <iostream>#include <stdlib.h>
-#include <math.h>using namespace std;
+/* Panorama creation using Image Stitching
+   Code is developed for stitching three images. Homographic transform matrix is chosen for specific manually chosen control points.
+   Users can use other methods to select control points and calculate homographic tranform matrix according to their images
+   Pass arguments in following order- Input_Image(1).raw Input_Image(2).raw Input_Image(3).raw BytesPerPixel Width Height Output_Image.raw
+   Author- Chinmay Jog
+*/
+
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+
+using namespace std;
 
 unsigned char projective_left(unsigned char** plane, int u, int v);
 unsigned char projective_right(unsigned char** plane, int u, int v);
-unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char *argv[]){	// Define file pointer and variables	FILE *file;	int BytesPerPixel;	int xSize = 512;
-	int ySize = 512;	// Check for proper syntax	if (argc < 3){		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;		return 0;	}	// Check if image is grayscale or color	if (argc < 4){		BytesPerPixel = 1; // default is grey image	}	else {		BytesPerPixel = atoi(argv[4]);		// Check if size is specified		if (argc >= 5){			xSize = atoi(argv[5]);
-			ySize = atoi(argv[6]);		}	}	// Allocate image data array	unsigned char* LeftImage = new unsigned char [xSize*ySize*BytesPerPixel];
+unsigned char** create_2D_array(int xSize, int ySize);
+
+int main(int argc, char *argv[])
+
+{
+	// Define file pointer and variables
+	FILE *file;
+	int BytesPerPixel;
+	int xSize = 512;
+	int ySize = 512;
+
+	// Check for proper syntax
+	if (argc < 3){
+		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;
+		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;
+		return 0;
+	}
+
+	// Check if image is grayscale or color
+	if (argc < 4){
+		BytesPerPixel = 1; // default is grey image
+	}
+	else {
+		BytesPerPixel = atoi(argv[4]);
+		// Check if size is specified
+		if (argc >= 5){
+			xSize = atoi(argv[5]);
+			ySize = atoi(argv[6]);
+		}
+	}
+
+	// Allocate image data array
+	unsigned char* LeftImage = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* MiddleImage = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* RightImage = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* result = new unsigned char [(xSize+900)*(ySize+500)*BytesPerPixel];
@@ -42,11 +76,31 @@ unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char 
 
     unsigned char** routright = create_2D_array(xSize+900, ySize+500);
     unsigned char** goutright = create_2D_array(xSize+900, ySize+500);
-    unsigned char** boutright = create_2D_array(xSize+900, ySize+500);	// Read images (filename specified by first 3 arguments) into image data matrix	if (!(file=fopen(argv[1],"rb"))) {		cout << "Cannot open file: " << argv[1] <<endl;		exit(1);	}	fread(LeftImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
+    unsigned char** boutright = create_2D_array(xSize+900, ySize+500);
 
-	if (!(file=fopen(argv[2],"rb"))) {		cout << "Cannot open file: " << argv[2] <<endl;		exit(1);	}	fread(MiddleImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
+	// Read images (filename specified by first 3 arguments) into image data matrix
+	if (!(file=fopen(argv[1],"rb"))) {
+		cout << "Cannot open file: " << argv[1] <<endl;
+		exit(1);
+	}
+	fread(LeftImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
 
-	if (!(file=fopen(argv[3],"rb"))) {		cout << "Cannot open file: " << argv[3] <<endl;		exit(1);	}	fread(RightImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);	// Stitching
+	if (!(file=fopen(argv[2],"rb"))) {
+		cout << "Cannot open file: " << argv[2] <<endl;
+		exit(1);
+	}
+	fread(MiddleImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
+
+	if (!(file=fopen(argv[3],"rb"))) {
+		cout << "Cannot open file: " << argv[3] <<endl;
+		exit(1);
+	}
+	fread(RightImage, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
+
+	// Stitching
 
 	int count1 = 0;
 	for (int i = 0; i < xSize*ySize*BytesPerPixel; i+=3)
@@ -164,7 +218,15 @@ unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char 
     }
     cout << "Result success " << endl;
 
-	// Write image data (filename specified by second argument) from image data matrix	if (!(file=fopen(argv[7],"wb"))) {		cout << "Cannot open file: " << argv[7] << endl;		exit(1);	}	fwrite(result, sizeof(unsigned char), (xSize+900)*(ySize+500)*BytesPerPixel, file);	fclose(file);
+
+	// Write image data (filename specified by second argument) from image data matrix
+
+	if (!(file=fopen(argv[7],"wb"))) {
+		cout << "Cannot open file: " << argv[7] << endl;
+		exit(1);
+	}
+	fwrite(result, sizeof(unsigned char), (xSize+900)*(ySize+500)*BytesPerPixel, file);
+	fclose(file);
 
 	delete[] LeftImage;
 	delete[] MiddleImage;
@@ -206,7 +268,10 @@ unsigned char** create_2D_array(int xSize, int ySize);int main(int argc, char 
     delete[] boutright;
 //	delete[] rout;
 //	delete[] gout;
-//	delete[] bout;	return 0;}
+//	delete[] bout;
+
+	return 0;
+}
 
 
 
