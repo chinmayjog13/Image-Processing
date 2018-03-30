@@ -1,21 +1,51 @@
-/*
-// Author Chinmay Jog
-// Id: 6171795819
-// Email: cjog@usc.edu
-// Date: Feb 25, 2018
-// Assignment 2
-// Question 2- Colour Error Diffusion
-*/#include <stdio.h>#include <iostream>#include <stdlib.h>
+/* Separable Colour Error Diffusion
+   Floyd Steinberg serpentine diffusion is used
+   Pass arguments in following order- Input_Image.raw Output_Image.raw BytesPerPixel Width Height
+   Author- Chinmay Jog
+*/
+
+#include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
 #include <cstdlib>
 #include <cmath>
-#include <math.h>using namespace std;
+#include <math.h>
+
+using namespace std;
 
 double* diffusion_fs(double* resultint_fs, int xSize, int ySize);
-double* diffusion_jjn(double* resultint_jjn, int xSize, int ySize);
-double* diffusion_st(double* resultint_st, int xSize, int ySize);
-int main(int argc, char *argv[]){	// Define file pointer and variables	FILE *file;	int BytesPerPixel;	int xSize = 512;
-	int ySize = 512;	// Check for proper syntax	if (argc < 3){		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;		return 0;	}	// Check if image is grayscale or color	if (argc < 4){		BytesPerPixel = 1; // default is grey image	}	else {		BytesPerPixel = atoi(argv[3]);		// Check if size is specified		if (argc >= 5){			xSize = atoi(argv[4]);
-			ySize = atoi(argv[5]);		}	}	// Allocate image data array	unsigned char* Imagedata = new unsigned char [xSize*ySize*BytesPerPixel];
+
+int main(int argc, char *argv[])
+
+{
+	// Define file pointer and variables
+	FILE *file;
+	int BytesPerPixel;
+	int xSize = 512;
+	int ySize = 512;
+
+	// Check for proper syntax
+	if (argc < 3){
+		cout << "Syntax Error - Incorrect Parameter Usage:" << endl;
+		cout << "program_name input_image.raw output_image.raw [BytesPerPixel = 1] [Size = 256]" << endl;
+		return 0;
+	}
+
+	// Check if image is grayscale or color
+	if (argc < 4){
+		BytesPerPixel = 1; // default is grey image
+	}
+	else {
+		BytesPerPixel = atoi(argv[3]);
+		// Check if size is specified
+		if (argc >= 5){
+			xSize = atoi(argv[4]);
+			ySize = atoi(argv[5]);
+		}
+	}
+
+	// Allocate image data array
+	unsigned char* Imagedata = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* result = new unsigned char [xSize*ySize*BytesPerPixel];
 	unsigned char* result_c = new unsigned char [xSize*ySize];
 	unsigned char* result_m = new unsigned char [xSize*ySize];
@@ -23,7 +53,17 @@ double* diffusion_st(double* resultint_st, int xSize, int ySize);
 	double* resultint_c = new double [xSize*ySize];
 	double* resultint_m = new double [xSize*ySize];
 	double* resultint_y = new double [xSize*ySize];
-	// Read image (filename specified by first argument) into image data matrix	if (!(file=fopen(argv[1],"rb"))) {		cout << "Cannot open file: " << argv[1] <<endl;		exit(1);	}	fread(Imagedata, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);	//Error Diffusion
+
+
+	// Read image (filename specified by first argument) into image data matrix
+	if (!(file=fopen(argv[1],"rb"))) {
+		cout << "Cannot open file: " << argv[1] <<endl;
+		exit(1);
+	}
+	fread(Imagedata, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
+
+	//Error Diffusion
 	int count1 = 0;
 	for (int i = 0; i < xSize*ySize*BytesPerPixel; i+=3)
     {
@@ -51,7 +91,15 @@ double* diffusion_st(double* resultint_st, int xSize, int ySize);
         count1++;
     }
     cout << "Diffusion done " << endl;
-	// Write image data (filename specified by second argument) from image data matrix	if (!(file=fopen(argv[2],"wb"))) {		cout << "Cannot open file: " << argv[2] << endl;		exit(1);	}	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);	fclose(file);
+
+	// Write image data (filename specified by second argument) from image data matrix
+
+	if (!(file=fopen(argv[2],"wb"))) {
+		cout << "Cannot open file: " << argv[2] << endl;
+		exit(1);
+	}
+	fwrite(result, sizeof(unsigned char), xSize*ySize*BytesPerPixel, file);
+	fclose(file);
 
 	delete[] Imagedata;
 	delete[] result;
@@ -61,7 +109,9 @@ double* diffusion_st(double* resultint_st, int xSize, int ySize);
 	delete[] resultint_c;
 	delete[] resultint_m;
 	delete[] resultint_y;
-	return 0;}
+
+	return 0;
+}
 
 
 double* diffusion_fs(double* resultint, int xSize, int ySize)
