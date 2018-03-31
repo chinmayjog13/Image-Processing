@@ -1,10 +1,8 @@
-/*
-/ Author Chinmay Jog
-/ Id 6171795819
-/ Email cjog@usc.edu
-/ Date March 25, 2018
-/ EE569 Assignment 3
-/ Question 1- Texture segmentation using Law's filter and pca
+/* Texture Segmentation using Laws filters and k means clustering
+   Input image is grayscale
+   OpenCV PCA function is used
+   Arguments must be passed as follows- Input_Image.raw Output.raw BytesPerPixel Width Height
+   Author- Chinmay Jog
 */
 
 #include <stdio.h>
