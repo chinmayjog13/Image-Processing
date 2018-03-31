@@ -44,7 +44,21 @@ This repository includes some useful and popular functions often used in image p
      Shrinking,
      Thinning,
      Skeletonizing
+12-Texture classification using Laws filters and k means clustering
 
+13-Texture Segmentation:
+    Using 3x3 Laws filters and k means clustering
+    Using 5x5 Laws filters and PCA with k means clustering
+
+14-Edge Detection:
+    Using Sobel filter
+    Using Laplacian of Gaussian
+
+15- OpenCV codes:
+    Keypoint Detection and Extraction using SIFT and SURF
+    Image Matching using SIFT and SURF features
+    Bag of words
+    
 Miscellaneous-
     Counting objects and sizes using morphological processing,
     Identifying unique types of jigsaw pieces in an image
