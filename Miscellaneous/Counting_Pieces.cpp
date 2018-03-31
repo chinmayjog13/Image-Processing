@@ -1,4 +1,4 @@
-/* Morhological Operation- Shrinking
+/* Counting game
    For images containing large pieces, value of variable 'iteration' may need to be increased
    This code counts total number of jigsaw pieces
    Jigsaw pieces are black, background is white
