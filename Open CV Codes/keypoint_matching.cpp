@@ -1,3 +1,14 @@
+/* Image Matching using SIFT and SURF
+   Open CV 3.3.1
+   Arguments must be passed as follows- Image(1) Image(2)
+   To use SIFT uncomment SIFT pointer creation line
+   To use SURF uncomment SURF pointer creation line
+   Use only SIFT or SURF at a time
+   Author- Chinmay Jog
+*/
+
+
+
 #include<stdio.h>
 #include<iostream>
 #include <vector>
