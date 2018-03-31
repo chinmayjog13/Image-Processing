@@ -1,6 +1,7 @@
 /* Texture Classification using Laws filters and k means clustering
    Input should be grayscale
-   Pass arguments in following order- InputImage.raw OutputImage.raw BytesPerPixel Width Height
+   Code is developed for 12 input images, this can be changed by making few simple changes
+   Pass arguments in following order- Input_Image(i).raw Output_Image.raw BytesPerPixel Width Height
    Author- Chinmay Jog
 */
 
