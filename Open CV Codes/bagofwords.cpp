@@ -1,3 +1,17 @@
+/* Bag of words using SIFT features
+   Open CV 3.3.1
+   Arguments must be passed as follows- Image(1) Image(2) Image(3) Image(4)
+   First three images are training images, fourth is test image
+   Number of images to be used for training can be changed by simple modification to this code
+   This code finds out which training image is closest to test image
+   Users can plot image descriptors by using YML files and python or using MatPlotLib for C++
+   Link for matplotlib for c++: https://github.com/lava/matplotlib-cpp
+   Author- Chinmay Jog
+*/
+
+
+
+
 #include<stdio.h>
 #include<iostream>
 #include <vector>
@@ -112,18 +126,14 @@ int main (int argc, char** argv)
         std::cout << "Optimus Prime is closest match to Ferrari 2 " << std::endl;
 
     const std::string f = "ferrari_2";
-
-    bool res = plt::named_hist("bumblebee", bumblebee, 8, "b", 1.0);
-    plt::title("Bumblebee");
-    plt::show(res);
-    plt::figure();
-//    plt::figure();
-//    plt::named_plot("ferrari 2", x_axis, ferrari_2);
-//    plt::named_plot("ferrari 1", x_axis, ferrari_1);
-//    plt::named_plot("optimus", x_axis, optimus);
-//    plt::named_plot("bumblebee", x_axis, bumblebee);
-//    plt::legend();
-//    plt::show(true);
+      
+    plt::plot(x_axis, bumblebee);
+    plt::named_plot("ferrari 2", x_axis, ferrari_2);
+    plt::named_plot("ferrari 1", x_axis, ferrari_1);
+    plt::named_plot("optimus", x_axis, optimus);
+    plt::named_plot("bumblebee", x_axis, bumblebee);
+    plt::legend();
+    plt::show(true);
 
     return 0;
 }
