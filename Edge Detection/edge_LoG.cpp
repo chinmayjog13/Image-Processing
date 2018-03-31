@@ -1,10 +1,9 @@
-/*
-/ Author Chinmay Jog
-/ Id 6171795819
-/ Email cjog@usc.edu
-/ Date March 25, 2018
-/ EE569 Assignment 3
-/ Question 2- Edge Detection using LoG Filter
+/* Edge Detection using LoG filter
+   Input is colour
+   Output_Image(1) is ternary edge map
+   Output_Image(2) binary edge map
+   Arguments must be passed as follows- Input_Image.raw Output_Image(1).raw BytesPerPixel Width Height Output_Image(2).raw
+   Author- Chinmay Jog
 */
 
 #include <stdio.h>
