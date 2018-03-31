@@ -1,0 +1,5 @@
+Identifying unique number of jigsaw pieces.
+Code identifies which two jigsaw pieces are similar irrespective of rotation.
+It checks whether two pieces have equal number of heads, holes and edges in the same order as the other.
+This code is tested on an image with white background and black jigsaw pieces, all of same size.
+It also counts total number of jigsaw pieces present in image by using shrinking.
